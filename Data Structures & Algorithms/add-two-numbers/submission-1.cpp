@@ -1,0 +1,49 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    int next_remainder = 0;
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+       ListNode* ans = new ListNode(-1);
+       ListNode* curr = ans;
+       while(l1  || l2 || next_remainder){
+            int sum = next_remainder;
+            if(l1) sum+=l1->val;
+            if(l2) sum+=l2->val;
+            if(sum>=10){
+                next_remainder = sum/10;
+                sum%=10;
+            }else{
+                next_remainder = 0;
+            }
+            cout << sum << " " << next_remainder << " " << ((l1) ? "L1 ": "NO") << ((l2) ? "L2" : "NO") << endl;
+            curr->next = new ListNode(sum); 
+            curr = curr->next;
+            if(l1) l1=l1->next;
+            if(l2) l2=l2->next;
+       }
+    //    while(next_remainder && (l1 || l2)){
+    //     int sum = 
+    //    }
+    //    if(next_remainder){
+    //     curr->next = new ListNode(next_remainder);
+    //     curr = curr->next;
+    //    }
+    //    if(l1){
+    //     curr->next = l1->next;
+    //    }
+    //    if(l2){
+    //     curr->next = l2->next;
+    //    }
+       return ans->next;
+    }
+};
