@@ -1,0 +1,70 @@
+
+class Solution { // dsu solution
+public:
+    int x[4] ={-1,1,0,0};
+    int y[4] ={0,0,-1,1};
+    int visited[100][100];
+
+    unordered_map<int, int> parent;
+    unordered_map<int, int> size;
+
+    void make_set(int v){
+        parent[v] = v;
+        size[v] = 1;
+    }
+
+    int find_set(int v){
+        if(parent[v]==v)return v;
+        return parent[v] = find_set(parent[v]);
+    }
+
+    bool union_set(int a, int b){
+        int pa = find_set(a);
+        int pb = find_set(b);
+        if(pa==pb) return false; // same
+        else{
+            if(size[pa]<size[pb]) swap(a,b);
+            parent[pb] = pa;
+            size[pa]+=size[pb];
+            return true;
+        }
+    }
+
+    int index(int i, int j, int col){
+        return i*col+j;
+    }
+
+    pair<int, int> ijIdx(int index, int col){
+        return make_pair(index/col, index%col);
+    }
+
+    int numIslands(vector<vector<char>>& grid) {
+        int row = grid.size(), col = grid[0].size(), res_cnt=0;
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(grid[i][j]=='1'){
+                    // make_set 
+                    make_set(index(i,j,col));
+                    res_cnt++;
+                    cout << "out " << i << " " << j << " " << parent.size() << endl;
+                    for(int k=0;k<4;k++){
+                        int xi = i+x[k], yj = j+y[k];
+                        if(xi>=0 && xi<row && yj>=0 && yj<col){
+                            // find --> apakah udah ada, kalau belum cont
+                            if(parent.count(index(xi,yj,col))){
+                                // kalau udah join
+                                if(union_set(index(i,j,col), index(xi,yj,col))){
+                                    // visited[xi][yj] = 1;
+                                    res_cnt--;
+                                    cout << xi << " " << yj << " " << res_cnt << endl;
+                                }
+                            }
+                        }
+                    }
+                    // visited[i][j] = 1;
+                }
+            }
+        }
+        return res_cnt;
+    }
+};
