@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool isColl(int a, int b){
+        if(a>0 && b<0) return true; 
+        else return false;
+    }
+
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        vector<int> st;
+        st.push_back(asteroids[0]);
+        for(int i = 1;i<asteroids.size();i++){
+            int ast = asteroids[i];
+            while(!st.empty() && isColl(st.back(), ast) && abs(st.back())<=abs(ast)){
+                int backVal = st.back();
+                st.pop_back();
+                if(abs(backVal)==abs(ast)){
+                    ast = 0;
+                    break;
+                }
+            }
+            if(ast && (st.empty() || !isColl(st.back(), ast))){
+                st.push_back(ast);
+            }
+
+        }
+        return st;
+    }
+};
+
+
