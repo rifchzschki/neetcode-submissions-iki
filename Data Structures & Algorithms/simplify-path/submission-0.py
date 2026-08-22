@@ -1,0 +1,28 @@
+from collections import deque
+class Solution:
+    stackPath = deque()
+    def simplifyPath(self, path: str) -> str:
+        i=0
+        currentSubpath=""
+        while(i<=len(path)):
+            if(i==len(path) or path[i]=='/'):
+                if(currentSubpath!="" and currentSubpath!="."):
+                    if(currentSubpath==".."):
+                        if(len(self.stackPath)):
+                            self.stackPath.pop()
+                    else:
+                        print(currentSubpath)
+                        self.stackPath.append(currentSubpath)
+                if(i==len(path)): break
+                currentSubpath=""
+            else:
+                currentSubpath+=path[i]
+            i+=1
+        print(currentSubpath)
+        
+        res = ""
+        while(len(self.stackPath)!=0):
+            subPath = self.stackPath.popleft()
+            print(subPath)
+            res+=f"/{subPath}"
+        return res if len(res)>0 else "/";
